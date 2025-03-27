@@ -8,6 +8,7 @@ import Navbar from './components/navbar';
 
 import LoginPage from './pages/loginPage';
 import RegisterPage from './pages/registerPage';
+import ProductsPage from './pages/productsPage';
 
 import { UserContext } from './context/UserContext'; 
 
@@ -29,7 +30,7 @@ function App() {
           
 
           <Routes>
-            <Route path="/" element ={<Main/>}/>              
+            <Route path="/" element ={<ProductsPage/>}/>              
             <Route path="/register" element ={!token?<RegisterPage/> : <Navigate to="/"/>}/>
             <Route path="/login" element ={!token?<LoginPage/> : <Navigate to="/"/>}/>
           </Routes>
