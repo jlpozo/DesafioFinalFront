@@ -12,7 +12,7 @@ const MyCard = ({id, img, marca, price, descripcion}) => {
     const irAProducto = (e) => {
         e.preventDefault();
         console.log("ID de la producto:", id); // Añade este log
-        navigate(`/producto/${id}`);
+        navigate(`/product/${id}`);
     };
 
     return (
@@ -30,7 +30,7 @@ const MyCard = ({id, img, marca, price, descripcion}) => {
                         <Button className="btn btn-dark mt-3 rounded-pill" variant="primary" onClick={irAProducto}>
                             Agregar al carro
                         </Button>
-                        {/*<AddCart pizza={pizza}/>*/}
+                        {/*<AddCart producto={producto}/>*/}
                     </ButtonGroup>
                 </Card.Body>
             </Card>

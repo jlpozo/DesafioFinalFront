@@ -9,6 +9,7 @@ import Navbar from './components/navbar';
 import LoginPage from './pages/loginPage';
 import RegisterPage from './pages/registerPage';
 import ProductsPage from './pages/productsPage';
+import ProductPage from './pages/productPage';
 
 import { UserContext } from './context/UserContext'; 
 
@@ -29,7 +30,8 @@ function App() {
           <Asidebar/>
 
           <Routes>
-            <Route path="/" element ={<ProductsPage/>}/>              
+            <Route path="/" element ={<ProductsPage/>}/>
+            <Route path="/product/:id" element={<ProductPage/>}/>
             <Route path="/register" element ={!token?<RegisterPage/> : <Navigate to="/"/>}/>
             <Route path="/login" element ={!token?<LoginPage/> : <Navigate to="/"/>}/>
           </Routes>
