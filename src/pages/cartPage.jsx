@@ -1,0 +1,53 @@
+import React from 'react';
+import '../App.css';
+import { useContext } from "react";
+import { Table, Button } from 'react-bootstrap';
+import Increment from '../components/increment';
+import { CartContext } from '../context/CartContext';
+import { UserContext } from '../context/UserContext';
+
+function Cart() {
+    const { cart, total } = useContext(CartContext);
+    const { token } = useContext(UserContext);
+
+    if (!cart) return <div>Carro vacío...</div>;
+
+    return (
+        <>            
+        <Table responsive>
+            <tbody>
+                {cart.map((producto, i) => (
+                    <tr key={i}>
+                        <td>
+                            <img className="img" width="80" height="70" src={producto.img} alt={producto.marca} />
+                        </td>
+                        <td><b>{producto.marca}</b> &nbsp;
+                        <small>{producto.desc}</small>
+                        </td>
+                        
+                        <td>
+                            <Increment index={i} />
+                        </td>
+                        <td>{producto.count}</td>
+                        <td>=</td>
+                        <td>{producto.count * producto.price}</td>
+                    </tr>
+                ))}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colSpan="5">Total</td>
+                    <td>=</td>
+                    <td className="fw-bold">{total}</td>
+                </tr>
+            </tfoot>
+        </Table>
+        
+        <Button disabled={!token} className="btn btn-dark mt-3 rounded-pill" variant="primary" onClick={null}>
+            Comprar
+        </Button> 
+        </>
+    );
+}
+
+export default Cart;

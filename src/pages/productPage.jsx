@@ -2,8 +2,11 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import '../App.css'
-import { Table, Button, Image } from 'react-bootstrap';
+import { Table, Image } from 'react-bootstrap';
 import {productos} from '../assets/js/products'
+import AddCart from '../components/addCart';
+import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function Product() {
     const [producto, setProducto] = useState(null);  // Cambiado de [] a null
@@ -18,6 +21,13 @@ function Product() {
         //consultarApi();
     }, [id]);
 
+    const navigate = useNavigate();
+
+    const goToCart = (e) => {
+        e.preventDefault();
+        console.log("ID de la producto:", id); // Añade este log
+        navigate(`/cart`);
+    };    
     /*const consultarApi = async () => {
         try {
             setLoading(true);
@@ -86,7 +96,10 @@ function Product() {
                     </tr>
                 </tbody>
             </Table>
-            <Button className="btn btn-dark mt-3 rounded-pill" >Añadir al carrito</Button>
+            <AddCart producto={producto}/>
+            <Button className="btn btn-dark mt-3 rounded-pill" variant="primary" onClick={goToCart}>
+                Comprar ahora
+            </Button>        
         </div>
     );
 }
