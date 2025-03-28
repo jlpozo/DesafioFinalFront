@@ -6,7 +6,6 @@ import CardProduct from '../components/cardProducto'
 import {Container, Row, Col} from 'react-bootstrap';
 
 
-
 const ProductsPage = () => {
   //const [productos, setProductos] = useState([]);
  /*

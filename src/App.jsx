@@ -12,6 +12,8 @@ import ProductsPage from './pages/productsPage';
 import ProductPage from './pages/productPage';
 import CartPage from './pages/cartPage';
 
+import Main from './pages/productsPage';
+
 import { UserContext } from './context/UserContext'; 
 
 
@@ -25,12 +27,13 @@ function App() {
   
   return (
     <>
-      <div>
+      <div class="container">
         <BrowserRouter>
             <Header/>
             <Navbar/>
             <Asidebar/>
-
+            
+            <main className="main">
             <Routes>
               <Route path="/" element ={<ProductsPage/>}/>
               <Route path="/product/:id" element={<ProductPage/>}/>
@@ -38,10 +41,10 @@ function App() {
               <Route path="/register" element ={!token?<RegisterPage/> : <Navigate to="/"/>}/>
               <Route path="/login" element ={!token?<LoginPage/> : <Navigate to="/"/>}/>
             </Routes>
-
+            </main>
             <Footer/>
         </BrowserRouter>
-
+        
         </div>
     </>
   )
