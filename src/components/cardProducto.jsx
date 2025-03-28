@@ -1,7 +1,10 @@
 import Card from 'react-bootstrap/Card';
 import AddCart from './addCart';
 
+
 import { useNavigate } from 'react-router-dom';
+
+const formatPrice = (valor) => valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const MyCard = ({id, img, marca, price, desc}) => {
     const producto = { id, img, marca, price, desc}
@@ -21,8 +24,8 @@ const MyCard = ({id, img, marca, price, desc}) => {
                 <Card.Body>
                     <Card.Title>{marca}</Card.Title>
                     <Card.Subtitle>Descripcion:</Card.Subtitle>
-                    <Card.Text>{desc}</Card.Text>
-                    <Card.Subtitle>Precio: ${price}</Card.Subtitle>
+                    <Card.Text><small>{desc}</small></Card.Text>
+                    <Card.Subtitle>Precio: ${formatPrice(price)}</Card.Subtitle>
                     <AddCart producto={producto}/>
 
                 </Card.Body>

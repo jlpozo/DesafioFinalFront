@@ -6,6 +6,8 @@ import Increment from '../components/increment';
 import { CartContext } from '../context/CartContext';
 import { UserContext } from '../context/UserContext';
 
+const formatPrice = (valor) => valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
 function Cart() {
     const { cart, total } = useContext(CartContext);
     const { token } = useContext(UserContext);
@@ -30,7 +32,7 @@ function Cart() {
                         </td>
                         <td>{producto.count}</td>
                         <td>=</td>
-                        <td>{producto.count * producto.price}</td>
+                        <td>{formatPrice(producto.count * producto.price)}</td>
                     </tr>
                 ))}
             </tbody>
@@ -38,7 +40,7 @@ function Cart() {
                 <tr>
                     <td colSpan="5">Total</td>
                     <td>=</td>
-                    <td className="fw-bold">{total}</td>
+                    <td className="fw-bold">${formatPrice(total)}</td>
                 </tr>
             </tfoot>
         </Table>

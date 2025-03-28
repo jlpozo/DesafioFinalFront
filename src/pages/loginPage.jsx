@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
   
   const { token, setToken } = useContext(UserContext);
+  const { isAdmin, setIsAdmin } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +19,7 @@ const Login = () => {
     setError(false)
     setErrorPassword(false);
     setErrorPasswordIncorrecta(false);
+    setIsAdmin(false);
 
     if(email === '' || password ===''){
       setError(true);
@@ -27,11 +29,13 @@ const Login = () => {
       setErrorPassword(true);
       return
     }
-    if(password!= '123456'){
+    if(password!= '123456'){ // Para prueba
         setErrorPasswordIncorrecta(true);
         return
     }
-    
+    if(email == 'admin@admin.cl'){ // Para prueba
+        setIsAdmin(true);
+    }
     setToken(true);
     console.log("logout", token);
   

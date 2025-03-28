@@ -1,12 +1,14 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import '../App.css'
+//import '../App.css'
 import { Table, Image } from 'react-bootstrap';
 import {productos} from '../assets/js/products'
 import AddCart from '../components/addCart';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
+const formatPrice = (valor) => valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 function Product() {
     const [producto, setProducto] = useState(null);  // Cambiado de [] a null
@@ -92,14 +94,17 @@ function Product() {
                     </tr>
                     <tr>
                         <td align="left">Precio</td>
-                        <td align="left">${producto.price}</td>
+                        <td align="left">${formatPrice(producto.price)}</td>
                     </tr>
                 </tbody>
             </Table>
-            <AddCart producto={producto}/>
-            <Button className="btn btn-dark mt-3 rounded-pill" variant="primary" onClick={goToCart}>
-                Comprar ahora
-            </Button>        
+            <br/>
+            <ButtonGroup style={{display: 'flex', justifyContent: 'center', gap: '1rem'}}>
+                    <AddCart producto={producto}/>
+                    <Button style={{marginRight: '5px'}} className="btn btn-dark mt-3 rounded-pill" variant="primary" onClick={goToCart}>
+                        Comprar ahora
+                    </Button>        
+            </ButtonGroup>
         </div>
     );
 }

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import '../App.css'
 import {productos} from '../assets/js/products'
 
-import CardProduct from '../components/cardProducto'
+import CardProduct from '../components/cardEditProducto'
 import {Container, Row, Col} from 'react-bootstrap';
 
 
-const ProductsPage = () => {
+const EditProductsPage = () => {
   //const [productos, setProductos] = useState([]);
  /*
   useEffect(() => {
@@ -25,7 +25,7 @@ const ProductsPage = () => {
   return (
     <>
       <div>
-        {/*<Header/>*/}
+       Edit
       </div>
       <Container>
         <Row xs={1} md={2} lg={3} className="g-4">
@@ -45,4 +45,4 @@ const ProductsPage = () => {
   )
 }
 
-export default ProductsPage;
+export default EditProductsPage;
