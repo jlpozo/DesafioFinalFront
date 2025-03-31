@@ -1,12 +1,17 @@
+/* html, body {
+  height: 100%; 
+  margin: 0; 
+}  */
 .container {
   display: grid;
   grid-template-areas:
     "header header"
     "sidebar main"
     "footer footer";
-  grid-template-columns: 1fr auto; /* Sidebar más estrecho que el contenido principal */
+  grid-template-columns: 2fr auto; /* Sidebar más estrecho que el contenido principal */
   grid-template-rows: auto 1fr auto; /* Filas ajustadas por contenido */
   gap: 10px; /* Espacio entre las áreas */
+  /* height: 100vh;  */
 }
 
 .header {
@@ -36,16 +41,6 @@
   text-align: center;
   padding: 10px;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 #root {

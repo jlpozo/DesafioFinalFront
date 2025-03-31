@@ -29,8 +29,8 @@ export default function AddCart({ producto }) {
     return (
 
 
-        <Button className="btn btn-dark mt-3 rounded-pill" variant="primary" onClick={addToCart}>
+      <Button className="btn btn-dark mt-3 rounded-pill" variant="primary" onClick={addToCart}>
             Agregar al carro
-        </Button>        
-    );
+        </Button>    
+    ); 
 }

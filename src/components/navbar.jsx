@@ -29,10 +29,30 @@ function Navbar() {
               <Link className="nav-link" to="/">Inicio</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/products">Productos</Link>
+              {/* <Link className="nav-link" to="/products">Productos</Link> */}
             </li>
           </ul>
+          
+          {/* Caja de búsqueda */}
+          <form className="d-flex ms-auto me-3">
+            <div className="input-group">
+              <input 
+                className="form-control" 
+                type="search" 
+                placeholder="Buscar" 
+                aria-label="Buscar"
+              />
+              <button className="btn btn-outline-secondary" type="submit">
+                <i className="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
         </div>
+        
+        {/* Botón de carrito en gris oscuro */}
+        <Link to="/cart" className="btn btn-secondary">
+          <i className="bi bi-cart"></i> Carrito
+        </Link>
       </div>
     </nav>
   )

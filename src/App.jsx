@@ -13,9 +13,9 @@ import EditProductsPage from './pages/editProductsPage';
 import ProductPage from './pages/productPage';
 import EditProductPage from './pages/editProductPage';
 import CartPage from './pages/cartPage';
+import AddProductPublic from './pages/addProductPublic';
 
 import { UserContext } from './context/UserContext'; 
-
 
 import './App.css'
 
@@ -28,25 +28,33 @@ function App() {
   
   return (
     <>
-      <div className="container">
-        <BrowserRouter>
-            <Header/>
-            <Navbar/>
-            <Asidebar/>
+      <BrowserRouter>
+        <div className="container d-flex flex-column min-vh-100">
+          <Header/>
+          <Navbar/>
+          
+          <div className="row flex-grow-1">
+            <div className="col-md-3">
+              <Asidebar/>
+            </div>
             
-            <main>
-              <Routes>
-                <Route path="/" element={!isAdmin?<ProductsPage/> : <EditProductsPage/>}/>
-                <Route path="/product/:id" element={!isAdmin?<ProductPage/> : <EditProductPage/>}/>
-                <Route path="/cart" element={<CartPage/>}/>
-                <Route path="/register" element ={!token?<RegisterPage/> : <Navigate to="/"/>}/>
-                <Route path="/login" element ={!token?<LoginPage/> : <Navigate to="/"/>}/>
-              </Routes>
-            </main>
-            <Footer/>
-        </BrowserRouter>
-        
+            <div className="col-md-9">
+              <main className="py-3">
+                <Routes>
+                  <Route path="/" element={!isAdmin?<ProductsPage/> : <EditProductsPage/>}/>
+                  <Route path="/product/:id" element={!isAdmin?<ProductPage/> : <EditProductPage/>}/>
+                  <Route path="/cart" element={<CartPage/>}/>
+                  <Route path="/register" element ={!token?<RegisterPage/> : <Navigate to="/"/>}/>
+                  <Route path="/login" element ={!token?<LoginPage/> : <Navigate to="/"/>}/>
+                  <Route path="/addProductPublic" element={<AddProductPublic/>}/>
+                </Routes>
+              </main>
+            </div>
+          </div>
+          
+          <Footer/>
         </div>
+      </BrowserRouter>
     </>
   )
 }

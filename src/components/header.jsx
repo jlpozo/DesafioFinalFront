@@ -16,10 +16,9 @@ function Header() {
     <header className="bg-primary text-white py-3">
       <div className="container-fluid d-flex justify-content-between align-items-center">
         <h1 className="m-0">Tech Store</h1>
+        <p className="m-"><h2>Tenemos todo lo que necesitas</h2></p>
         <div>
-          <Link to="/cart" className="btn btn-light">
-            <i className="bi bi-cart"></i> Carrito
-          </Link>
+          
         </div>
       </div>
     </header>
