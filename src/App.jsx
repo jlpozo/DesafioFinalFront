@@ -41,7 +41,7 @@ function App() {
             <div className="col-md-9">
               <main className="py-3">
                 <Routes>
-                  <Route path="/" element={!isAdmin?<ProductsPage/> : <EditProductsPage/>}/>
+                  <Route path="/:id" element={!isAdmin?<ProductsPage/> : <EditProductsPage/>}/>
                   <Route path="/product/:id" element={!isAdmin?<ProductPage/> : <EditProductPage/>}/>
                   <Route path="/cart" element={<CartPage/>}/>
                   <Route path="/register" element ={!token?<RegisterPage/> : <Navigate to="/"/>}/>
