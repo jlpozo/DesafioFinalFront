@@ -7,7 +7,7 @@ export default function AddCart({ producto }) {
     const { cart, setCart, setTotal } = useContext(CartContext);
 
     const calculateTotal = (cartItems) => {
-        const sum = cartItems.reduce((total, item) => total + (item.price * item.count), 0);
+        const sum = cartItems.reduce((total, item) => total + (item.precio * item.count), 0);
         setTotal(sum);
         console.log("Total:", sum);
     };

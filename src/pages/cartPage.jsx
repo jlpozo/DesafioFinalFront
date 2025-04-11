@@ -21,10 +21,10 @@ function Cart() {
                 {cart.map((producto, i) => (
                     <tr key={i}>
                         <td>
-                            <img className="img" width="80" height="70" src={producto.img} alt={producto.marca} />
+                            <img className="img" width="80" height="70" src={producto.imagen_url} alt={producto.marca} />
                         </td>
                         <td><b>{producto.marca}</b> &nbsp;
-                        <small>{producto.desc}</small>
+                        <small>{producto.descripcion}</small>
                         </td>
                         
                         <td>
@@ -32,7 +32,7 @@ function Cart() {
                         </td>
                         <td>{producto.count}</td>
                         <td>=</td>
-                        <td>{formatPrice(producto.count * producto.price)}</td>
+                        <td>{formatPrice(producto.count * producto.precio)}</td>
                     </tr>
                 ))}
             </tbody>
