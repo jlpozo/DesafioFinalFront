@@ -4,10 +4,10 @@ import AddCart from './addCart';
 
 import { useNavigate } from 'react-router-dom';
 
-const formatPrice = (valor) => valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const formatPrice = (valor) => Math.round(parseFloat(valor || 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-const MyCard = ({id, img, marca, price, desc}) => {
-    const producto = { id, img, marca, price, desc}
+const MyCard = ({id, imagen_url, marca, precio, descripcion}) => {
+    const producto = { id, imagen_url, marca, precio, descripcion}
     const navigate = useNavigate();
 
     const irAProducto = (e) => {
@@ -20,12 +20,12 @@ const MyCard = ({id, img, marca, price, desc}) => {
         <>
 
             <Card style={{ width: "18rem", marginInline:"20px" }}>
-                <Card.Img variant="top" src={img} onClick={irAProducto}/>
+                <Card.Img variant="top" src={imagen_url} onClick={irAProducto}/>
                 <Card.Body>
                     <Card.Title>{marca}</Card.Title>
                     <Card.Subtitle>Descripcion:</Card.Subtitle>
-                    <Card.Text><small>{desc}</small></Card.Text>
-                    <Card.Subtitle>Precio: ${formatPrice(price)}</Card.Subtitle>
+                    <Card.Text><small>{descripcion}</small></Card.Text>
+                    <Card.Subtitle>Precio: ${formatPrice(precio)}</Card.Subtitle>
                     <AddCart producto={producto}/>
 
                 </Card.Body>

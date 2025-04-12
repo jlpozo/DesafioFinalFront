@@ -14,6 +14,8 @@ import ProductPage from './pages/productPage';
 import EditProductPage from './pages/editProductPage';
 import CartPage from './pages/cartPage';
 import AddProductPublic from './pages/addProductPublic';
+import OrderPage from './pages/orderPage';
+import Home from './pages/home';
 
 import { UserContext } from './context/UserContext'; 
 
@@ -41,12 +43,14 @@ function App() {
             <div className="col-md-9">
               <main className="py-3">
                 <Routes>
+                  <Route path="/" element={<Home/>}/>
                   <Route path="/:id" element={!isAdmin?<ProductsPage/> : <EditProductsPage/>}/>
                   <Route path="/product/:id" element={!isAdmin?<ProductPage/> : <EditProductPage/>}/>
                   <Route path="/cart" element={<CartPage/>}/>
                   <Route path="/register" element ={!token?<RegisterPage/> : <Navigate to="/"/>}/>
                   <Route path="/login" element ={!token?<LoginPage/> : <Navigate to="/"/>}/>
                   <Route path="/addProductPublic" element={<AddProductPublic/>}/>
+                  <Route path="/orderConfirm" element={<OrderPage/>}/>
                 </Routes>
               </main>
             </div>

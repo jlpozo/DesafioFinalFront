@@ -1,24 +1,81 @@
 import { createContext, useState, useEffect } from 'react';
-import { productCart } from '../assets/js/products.js';
 export const CartContext = createContext(null);
 
-const CartProvider =({children}) => {
-    const [cart, setCart] = useState(productCart);
+const CartProvider = ({ children }) => {
+    const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
+    const [loadingCart, setLoadingCart] = useState(false);
 
-
+    // Calcular el total cuando cambia el carrito
     useEffect(() => {
-      if (cart && cart.length > 0) {
-          const initialTotal = cart.reduce((sum, item) => sum + (item.price * item.count), 0);
-          setTotal(initialTotal);
-      }
-    }, []);    
+        const initialTotal = cart.reduce((sum, item) => sum + (item.precio * item.count), 0);
+        setTotal(initialTotal);
+    }, [cart]);
 
-  return (
-    <CartContext.Provider value={{ cart, setCart, total, setTotal}}>
-      {children}
-    </CartContext.Provider>
-  );
+    // Calcular el total manualmente (útil después de operaciones específicas)
+    const calculateTotal = (cartItems) => {
+        const sum = cartItems.reduce((total, item) => total + (item.precio * item.count), 0);
+        setTotal(sum);
+    };
+
+    // Añadir un producto al carrito
+    const addToCart = (product) => {
+        setLoadingCart(true);
+        const newCart = [...cart];
+        const existingIndex = cart.findIndex(item => item.id === product.id);
+
+        if (existingIndex !== -1) {
+            newCart[existingIndex].count += 1;
+        } else {
+            newCart.push({ ...product, count: 1 });
+        }
+        
+        setCart(newCart);
+        calculateTotal(newCart);
+        setLoadingCart(false);
+    };
+
+    // Modificar la cantidad de un producto en el carrito
+    const updateQuantity = (index, newCount) => {
+        if (newCount < 1) return;
+        
+        const updatedCart = [...cart];
+        updatedCart[index].count = newCount;
+        setCart(updatedCart);
+        calculateTotal(updatedCart);
+    };
+
+    // Eliminar un producto del carrito
+    const removeFromCart = (index) => {
+        const updatedCart = [...cart];
+        updatedCart.splice(index, 1);
+        setCart(updatedCart);
+        calculateTotal(updatedCart);
+    };
+
+    // Limpiar completamente el carrito
+    const clearCart = () => {
+        setCart([]);
+        setTotal(0);
+    };
+
+    return (
+        <CartContext.Provider 
+            value={{ 
+                cart, 
+                setCart, 
+                total, 
+                setTotal, 
+                addToCart, 
+                updateQuantity, 
+                removeFromCart, 
+                clearCart, 
+                loadingCart 
+            }}
+        >
+            {children}
+        </CartContext.Provider>
+    );
 };
 
 export default CartProvider;

@@ -48,17 +48,17 @@ export const productCart = [
   {
     id: "P003",
     marca: "Lenovo",
-    price: 599990,
+    precio: 599990,
     count: 1,
-    img: "https://assets.pcfactory.cl/public/foto/49062/1_500.jpg?t=1738936733101",
-    desc: "Notebook Ideapad Slim 3 Gen 8 Intel Core i3-N305 15.6'' FHD 8GB 512GB SSD Windows 11 Artic Grey",
+    imagen_url: "https://assets.pcfactory.cl/public/foto/49062/1_500.jpg?t=1738936733101",
+    descripcion: "Notebook Ideapad Slim 3 Gen 8 Intel Core i3-N305 15.6'' FHD 8GB 512GB SSD Windows 11 Artic Grey",
   },
   {
     id: "P002",
     marca: "Asus",
-    price: 585990,
+    precio: 585990,
     count: 1,
-    img: "https://assets.pcfactory.cl/public/foto/49807/1_500.jpg?t=1741351333711",
-    desc: "Notebook Gamer TUF A15 AMD Ryzen 5 7535HS NVIDIA GeForce RTX 2050 15.6'' FHD 144Hz 8GB RAM 512 SSD FA506NF-HN003W",
+    imagen_url: "https://assets.pcfactory.cl/public/foto/49807/1_500.jpg?t=1741351333711",
+    descripcion: "Notebook Gamer TUF A15 AMD Ryzen 5 7535HS NVIDIA GeForce RTX 2050 15.6'' FHD 144Hz 8GB RAM 512 SSD FA506NF-HN003W",
   },
 ];
