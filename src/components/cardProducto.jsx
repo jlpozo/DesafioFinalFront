@@ -4,7 +4,7 @@ import AddCart from './addCart';
 
 import { useNavigate } from 'react-router-dom';
 
-const formatPrice = (valor) => valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const formatPrice = (valor) => Math.round(parseFloat(valor || 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const MyCard = ({id, imagen_url, marca, precio, descripcion}) => {
     const producto = { id, imagen_url, marca, precio, descripcion}

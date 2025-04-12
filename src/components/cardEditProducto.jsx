@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const formatPrice = (valor) => valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const formatPrice = (valor) => Math.round(parseFloat(valor || 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const MyCard = ({id, imagen_url, marca, precio, descripcion, onDelete}) => {
     const producto = { id, imagen_url, marca, precio, descripcion}
