@@ -35,6 +35,12 @@ const EditProductsPage = () => {
       }
       
   }; 
+
+  // Nueva función para manejar la eliminación de productos
+  const handleProductoEliminado = (productoId) => {
+    // Actualiza el estado eliminando el producto con el ID dado
+    setProductos(productos.filter(producto => producto.id !== productoId));
+  };  
   
   return (
     <>
@@ -50,6 +56,7 @@ const EditProductsPage = () => {
                         precio={producto.precio}
                         descripcion={producto.descripcion}
                         imagen_url={producto.imagen_url}
+                        onDelete={handleProductoEliminado} // Pasa la función de callback
             />
           </Col>
           )}
