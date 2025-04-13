@@ -10,13 +10,17 @@ ul {
 .container {
   display: grid;
   grid-template-areas:
-    "header header"
-    "sidebar main"
-    "footer footer";
-  grid-template-columns: 2fr auto; /* Sidebar más estrecho que el contenido principal */
-  grid-template-rows: auto 1fr auto; /* Filas ajustadas por contenido */
-  gap: 10px; /* Espacio entre las áreas */
-  /* height: 100vh;  */
+      "header header"
+      "sidebar main"
+      "footer footer";
+  grid-template-columns: 1fr 3fr; /* Sidebar: 1fr, Main: 3fr */
+  grid-template-rows: auto 1fr auto; /* Ajusta las filas según el contenido */
+  gap: 10px; /* Espacio entre elementos */
+  width: 100%; /* Garantiza que el contenedor ocupe el ancho completo */
+}
+
+.header, .sidebar, .main, .footer {
+  width: 100%;
 }
 
 .header {
@@ -49,7 +53,7 @@ ul {
 
 
 #root {
-  max-width: 1280px;
+  max-width: none;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -89,4 +93,21 @@ ul {
 
 .read-the-docs {
   color: #888;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: inherit;
+  padding: 10px;
+}
+
+.nav-link:hover {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.active-link {
+  background-color: #b5b1b1; /* Efecto sombreado */
+  border-radius: 5px;
+  font-weight: bold;
 }

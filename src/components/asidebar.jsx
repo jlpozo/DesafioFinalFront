@@ -1,29 +1,14 @@
-/* import React from 'react'
-
-function asidebar() {
-  return (
-    <div>asidebar</div>
-  )
-}
-
-export default asidebar */
 import React from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 const apiUrl = import.meta.env.VITE_API_URL;
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 
 
 
 function Sidebar() {
-  /* const categories = [
-    'Smartphones', 
-    'Laptops', 
-    'Accesorios', 
-    'Audio', 
-    'Almacenamiento'
-  ] */
+ 
     const [categorias, setCategorias] = useState([]);
     const navigate = useNavigate();
   
@@ -48,32 +33,24 @@ function Sidebar() {
 
   return (
     
-   <div className="card mt-3">
-      <div className="card-header">
+    <div className="card mt-3">
+    <div className="card-header">
         Categorías
-      </div>
-      <ul className="list-group list-group-flush">
+    </div>
+    <ul className="list-group list-group-flush">
         {categorias.map(categoria => (
-          <li> 
-          <button onClick={() => obtenerProductosPorCategoria(categoria.id)}>
-          {categoria.nombre}
-           </button>
-
-          </li>
-        ))}
-      </ul>
-     </div>
-
-/*     <div>
-    <h1>Lista de Categorías:</h1>
-    <ul>
-        {categorias.map(categoria => (
-            <li key={categoria.id}>
-                <strong>{categoria.nombre}</strong>
+            <li key={categoria.id} className="list-group-item">
+                   <NavLink
+                            to={`/${categoria.id}`}
+                            /* className="nav-link"
+                            activeClassName="active-link" */
+                            className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'}>
+                    {categoria.nombre}
+                    </NavLink>
             </li>
         ))}
     </ul>
-</div> */
+</div>
   )
 }
 
