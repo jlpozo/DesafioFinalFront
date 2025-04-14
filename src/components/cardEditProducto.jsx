@@ -14,7 +14,7 @@ const MyCard = ({id, imagen_url, marca, precio, descripcion, onDelete}) => {
     
     const irAProducto = (e) => {
         e.preventDefault();
-        console.log("ID de la producto:", id);
+        console.log("ID de la producto::", id);
         navigate(`/product/${id}`);
     };
     

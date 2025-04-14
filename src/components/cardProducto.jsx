@@ -1,5 +1,5 @@
-import Card from 'react-bootstrap/Card';
 import AddCart from './addCart';
+import { Row, Col, Card } from "react-bootstrap";
 
 
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ const MyCard = ({id, imagen_url, marca, precio, descripcion}) => {
 
     return (
         <>
-
+ <Row xs={1} md={2} lg={3} className="g-4">
             <Card style={{ width: "18rem", marginInline:"20px" }}>
                 <Card.Img variant="top" src={imagen_url} onClick={irAProducto}/>
                 <Card.Body>
@@ -30,7 +30,7 @@ const MyCard = ({id, imagen_url, marca, precio, descripcion}) => {
 
                 </Card.Body>
             </Card>
-
+            </Row>
         </>
     );
 };

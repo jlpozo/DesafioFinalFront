@@ -7,17 +7,22 @@ ul {
   padding: 0;
   margin: 0;
 }
-.container {
+.principal {
   display: grid;
   grid-template-areas:
-    "header header"
-    "sidebar main"
-    "footer footer";
-  grid-template-columns: 2fr auto; /* Sidebar más estrecho que el contenido principal */
-  grid-template-rows: auto 1fr auto; /* Filas ajustadas por contenido */
-  gap: 10px; /* Espacio entre las áreas */
-  /* height: 100vh;  */
+      "header header"
+      "sidebar main"
+      "footer footer";
+  grid-template-columns: 1fr auto; /* Sidebar más estrecho que el contenido principal */
+  grid-template-rows: auto auto auto; /* Ajusta las filas según el contenido */
+  gap: 4px; /* Espacio entre las áreas */
+  width: 95vw; /* Asegura que el contenedor ocupe todo el ancho */
+  max-width: none; /* Elimina cualquier restricción de ancho */
 }
+
+/* .header, .sidebar, .main, .footer {
+  width: 100%;
+} */
 
 .header {
   grid-area: header;
@@ -30,26 +35,35 @@ ul {
 .sidebar {
   grid-area: sidebar;
   background-color: #f4f4f4;
-  padding: 10px;
+  padding: 5px;
 }
 
 .main {
   grid-area: main;
   background-color: #fff;
-  padding: 10px;
+  padding: 5px;
+  width: 100%; 
 }
 
-.footer {
-  grid-area: footer;
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
+footer .text-end {
+  text-align: right; /* Alinea texto al lado derecho */
+}
+
+footer a {
+  color: #000; /* Color de los enlaces */
+}
+
+footer a:hover {
+  text-decoration: underline; /* Subrayado al pasar el cursor */
+}
+
+footer .row > div {
+  margin-bottom: 10px; /* Espaciado entre las columnas */
 }
 
 
 #root {
-  max-width: 1280px;
+  max-width: none;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -89,4 +103,35 @@ ul {
 
 .read-the-docs {
   color: #888;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: inherit;
+  padding: 10px;
+}
+
+.nav-link:hover {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.active-link {
+  background-color: #b5b1b1; /* Efecto sombreado */
+  border-radius: 5px;
+  font-weight: bold;
+}
+.celular-img {
+  height: 90px;
+  animation: wave 2s ease-in-out infinite;
+  margin-left: 1rem; /* Ajusta este valor según cuánto quieras moverla */
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(10deg); }
+  40% { transform: rotate(-8deg); }
+  60% { transform: rotate(10deg); }
+  80% { transform: rotate(-6deg); }
+  100% { transform: rotate(0deg); }
 }

@@ -1,155 +1,173 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import { UserContext } from '../context/UserContext';
 
-const EditProductPage = () => {
-  // Datos iniciales del producto
-  const [product, setProduct] = useState({
-    id: 1,
-    name: "Smartphone TechPro X1",
-    price: 299990,
-    description: "El Smartphone TechPro X1 combina rendimiento excepcional con un diseño elegante.",
-    features: ["Procesador de alta velocidad", "Cámara de 48MP", "Pantalla AMOLED", "Batería de larga duración"],
-    image: "https://example.com/image.jpg",
-    contact: "contacto@techpro.com",
+const apiUrl = import.meta.env.VITE_API_URL;
+
+const AddProductPublic = () => {
+  const { token } = useContext(UserContext); // Obtener token desde el contexto
+  const [formData, setFormData] = useState({
+    nombre: "",
+    imagen_url: "",
+    descripcion: "",
+    precio: "",
+    caracteristicas: "",
+    categoria_id: "", // Nuevo campo para categoría
   });
 
-  // Restablecer campos para nuevo producto
-  const resetFields = () => {
-    setProduct({
-      id: null,
-      name: "",
-      price: "",
-      description: "",
-      features: [],
-      image: "",
-      contact: "",
-    });
-  };
+  const [categorias, setCategorias] = useState([]); // Estado para almacenar las categorías
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Manejo de cambios en los campos
+  // Obtener categorías desde el backend
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/v1/categorias`);
+        setCategorias(response.data.categorias);
+      } catch (error) {
+        console.error("Error al cargar las categorías:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
+  // Manejar cambios en los inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: value,
     }));
   };
 
-  // Manejo de cambios en las características
-  const handleFeatureChange = (index, value) => {
-    const newFeatures = [...product.features];
-    newFeatures[index] = value;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      features: newFeatures,
+  // Manejar cambios en el combo box
+  const handleCategoriaChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      categoria_id: e.target.value,
     }));
   };
 
-  // Agregar una nueva característica
-  const addFeature = () => {
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      features: [...prevProduct.features, ""],
-    }));
-  };
-
-  // Eliminar una característica
-  const removeFeature = (index) => {
-    const newFeatures = product.features.filter((_, i) => i !== index);
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      features: newFeatures,
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  // Manejar envío del formulario
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Producto actualizado:", product);
-    alert("¡Producto actualizado con éxito!");
+    try {
+      const response = await axios.post(`${apiUrl}/v1/productos`, formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        setSuccessMessage("¡Producto ingresado con éxito!");
+        setFormData({
+          nombre: "",
+          imagen_url: "",
+          descripcion: "",
+          precio: "",
+          caracteristicas: "",
+          categoria_id: "",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Error al ingresar el producto. Inténtalo nuevamente.");
+    }
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h2>Editar Producto</h2>
-      <button
-        type="button"
-        onClick={resetFields}
-        style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}
-      >
-        Nuevo Producto
-      </button>
+    <div className="container py-4">
+      <h1 className="mb-4">Nuevo Producto</h1>
+
+      {successMessage && <div className="alert alert-success">{successMessage}</div>}
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre:</label>
+        <div className="mb-3">
+          <label className="form-label">Nombre:</label>
           <input
             type="text"
-            name="name"
-            value={product.name}
+            name="nombre"
+            value={formData.nombre}
             onChange={handleChange}
-            style={{ width: '100%', marginBottom: '10px' }}
+            className="form-control"
+            required
           />
         </div>
-        <div>
-          <label>Imagen (URL):</label>
+
+        <div className="mb-3">
+          <label className="form-label">Imagen (URL):</label>
           <input
             type="text"
-            name="image"
-            value={product.image}
+            name="imagen_url"
+            value={formData.imagen_url}
             onChange={handleChange}
-            style={{ width: '100%', marginBottom: '10px' }}
+            className="form-control"
           />
         </div>
-        <div>
-          <label>Descripción:</label>
+
+        <div className="mb-3">
+          <label className="form-label">Descripción:</label>
           <textarea
-            name="description"
-            value={product.description}
+            name="descripcion"
+            value={formData.descripcion}
             onChange={handleChange}
-            style={{ width: '100%', marginBottom: '10px' }}
+            className="form-control"
+            rows="3"
           />
         </div>
-        <div>
-          <label>Precio:</label>
+
+        <div className="mb-3">
+          <label className="form-label">Precio:</label>
           <input
             type="number"
-            name="price"
-            value={product.price}
+            name="precio"
+            value={formData.precio}
             onChange={handleChange}
-            style={{ width: '100%', marginBottom: '10px' }}
+            className="form-control"
+            required
           />
         </div>
-        <div>
-          <label>Características:</label>
-          {product.features.map((feature, index) => (
-            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-              <input
-                type="text"
-                value={feature}
-                onChange={(e) => handleFeatureChange(index, e.target.value)}
-                style={{ flex: 1, marginRight: '10px' }}
-              />
-              <button type="button" onClick={() => removeFeature(index)}>Eliminar</button>
-            </div>
-          ))}
-          <button type="button" onClick={addFeature} style={{ marginTop: '10px' }}>
-            Agregar característica
-          </button>
-        </div>
-        <div>
-          <label>Contacto:</label>
+
+        <div className="mb-3">
+          <label className="form-label">Características:</label>
           <input
-            type="email"
-            name="contact"
-            value={product.contact}
+            type="text"
+            name="caracteristicas"
+            value={formData.caracteristicas}
             onChange={handleChange}
-            style={{ width: '100%', marginBottom: '10px' }}
+            className="form-control"
+            placeholder="Ingrese una característica"
           />
         </div>
-        <button type="submit" style={{ marginTop: '20px' }}>Guardar Cambios</button>
+
+        <div className="mb-3">
+          <label className="form-label">Categoría:</label>
+          <select
+            name="categoria_id"
+            value={formData.categoria_id}
+            onChange={handleCategoriaChange}
+            className="form-select"
+            required
+          >
+            <option value="">Seleccione una categoría</option>
+            {categorias.map((categoria) => (
+              <option key={categoria.id} value={categoria.id}>
+                {categoria.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button type="submit" className="btn btn-success">
+          Ingresar Producto
+        </button>
       </form>
-      <Link to="/products" style={{ display: 'block', marginTop: '20px' }}>Volver a la lista de productos</Link>
     </div>
   );
 };
 
-export default EditProductPage;
+export default AddProductPublic;

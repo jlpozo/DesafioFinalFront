@@ -5,6 +5,7 @@ import CardProduct from '../components/cardProducto';
 import CardEditProduct from '../components/cardEditProducto';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
+import Footer from '../components/footer';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -19,7 +20,7 @@ function Home() {
   const navigate = useNavigate();
 
   // Cargar todas las categorías
-  useEffect(() => {
+/*   useEffect(() => {
     const cargarCategorias = async () => {
       try {
         const response = await axios.get(`${apiUrl}/v1/categorias`);
@@ -33,7 +34,7 @@ function Home() {
     };
 
     cargarCategorias();
-  }, []);
+  }, []); */
 
   // Cargar todos los productos o productos por categoría
   useEffect(() => {
@@ -69,9 +70,9 @@ function Home() {
   }, [categoriaSeleccionada, busqueda]);
 
   // Manejar cambio de categoría
-  const handleCategoriaChange = (e) => {
+/*   const handleCategoriaChange = (e) => {
     setCategoriaSeleccionada(e.target.value);
-  };
+  }; */
 
   // Manejar búsqueda
   const handleBusqueda = (e) => {
@@ -85,48 +86,60 @@ function Home() {
   };
 
   return (
-    <div>
-      <h2 className="mb-4">Nuestros productos</h2>
-      
-      {/* Mostrar mensaje de carga o error */}
-      {loading ? (
-        <div className="text-center my-5">
-          <Spinner animation="border" variant="primary" />
-          <p className="mt-3">Cargando productos...</p>
-        </div>
-      ) : error ? (
-        <div className="alert alert-danger">{error}</div>
-      ) : productos.length === 0 ? (
-        <div className="alert alert-info">No se encontraron productos</div>
-      ) : (
-        <Container>
-          <Row xs={1} md={2} lg={3} className="g-4">
-            {productos.map(producto => (
-              <Col key={producto.id}>
-                {isAdmin ? (
-                  <CardEditProduct
-                    id={producto.id}
-                    marca={producto.nombre || producto.marca}
-                    precio={producto.precio}
-                    descripcion={producto.descripcion}
-                    imagen_url={producto.imagen_url}
-                    onDelete={handleProductoEliminado}
-                  />
-                ) : (
-                  <CardProduct
-                    id={producto.id}
-                    marca={producto.nombre || producto.marca}
-                    precio={producto.precio}
-                    descripcion={producto.descripcion}
-                    imagen_url={producto.imagen_url}
-                  />
-                )}
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      )}
-    </div>
+
+<div className="container fluid">
+  {/* Header */}
+  {/* <header className="header">Tech Store</header> */}
+
+  {/* Sidebar */}
+  {/* <aside className="sidebar">Categorías</aside> */}
+
+  {/* Main content */}
+  <main className="main">
+    {/* <h2 className="mb-4">Nuestros productos</h2> */}
+    {loading ? (
+      <div className="text-center my-5">
+        <Spinner animation="border" variant="primary" />
+        <p className="mt-3">Cargando productos...</p>
+      </div>
+    ) : error ? (
+      <div className="alert alert-danger">{error}</div>
+    ) : productos.length === 0 ? (
+      <div className="alert alert-info">No se encontraron productos</div>
+    ) : (
+      <Container>
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {productos.map((producto) => (
+            <Col key={producto.id}>
+              {isAdmin ? (
+                <CardEditProduct
+                  id={producto.id}
+                  marca={producto.nombre || producto.marca}
+                  precio={producto.precio}
+                  descripcion={producto.descripcion}
+                  imagen_url={producto.imagen_url}
+                  onDelete={handleProductoEliminado}
+                />
+              ) : (
+                <CardProduct
+                  id={producto.id}
+                  marca={producto.nombre || producto.marca}
+                  precio={producto.precio}
+                  descripcion={producto.descripcion}
+                  imagen_url={producto.imagen_url}
+                />
+              )}
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    )}
+  </main>
+
+  {/* Footer */}
+  {/* <Footer className="footer" /> */}
+</div>
+
   );
 }
 

@@ -1,158 +1,200 @@
-import React from 'react'
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { UserContext } from '../context/UserContext';
+import { useContext } from "react";
+const apiUrl = import.meta.env.VITE_API_URL;
 
-const EditProductPage = () => {
-   // Datos iniciales del producto
-    const [product, setProduct] = useState({
-      id: 1,
-      name: "Smartphone TechPro X1",
-      price: 299990,
-      description: "El Smartphone TechPro X1 combina rendimiento excepcional con un diseño elegante.",
-      features: ["Procesador de alta velocidad", "Cámara de 48MP", "Pantalla AMOLED", "Batería de larga duración"],
-      image: "https://example.com/image.jpg",
-      contact: "contacto@techpro.com",
-    });
-  
-    // Restablecer campos para nuevo producto
-    const resetFields = () => {
-      setProduct({
-        id: null,
-        name: "",
-        price: "",
-        description: "",
-        features: [],
-        image: "",
-        contact: "",
-      });
+const ProductEditor = () => {
+  const { id } = useParams();
+  const { token, user } = useContext(UserContext);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [formData, setFormData] = useState({
+    nombre: '',
+    precio: '',
+    marca: '',
+    descripcion: '',
+    caracteristicas: '',
+    stock: 0,
+    imagen_url: ''
+  });
+
+  // Fetch product data
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(`${apiUrl}/v1/productos/${id}`);
+        setProduct(data);
+        setFormData({
+          nombre: data.nombre,
+          precio: formatPrice(data.precio),
+          marca: data.marca,
+          descripcion: data.descripcion,
+          caracteristicas: data.caracteristicas,
+          stock: data.stock,
+          imagen_url: data.imagen_url
+        });
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
     };
-  
-    // Manejo de cambios en los campos
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setProduct((prevProduct) => ({
-        ...prevProduct,
-        [name]: value,
-      }));
+    if (id) fetchProduct();
+  }, [id]);
+
+  // Function to format price with thousand separators
+  const formatPrice = (price) => {
+    return parseInt(price).toLocaleString('es-CL'); // Chilean locale for formatting
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: name === 'stock' ? parseInt(value) : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+
+      // Prepare price for the server (removing thousand separators)
+      const preparedFormData = {
+        ...formData,
+        precio: parseInt(formData.precio.replace(/\./g, ''))
+      };
+      const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
     };
-  
-    // Manejo de cambios en las características
-    const handleFeatureChange = (index, value) => {
-      const newFeatures = [...product.features];
-      newFeatures[index] = value;
-      setProduct((prevProduct) => ({
-        ...prevProduct,
-        features: newFeatures,
-      }));
-    };
-  
-    // Agregar una nueva característica
-    const addFeature = () => {
-      setProduct((prevProduct) => ({
-        ...prevProduct,
-        features: [...prevProduct.features, ""],
-      }));
-    };
-  
-    // Eliminar una característica
-    const removeFeature = (index) => {
-      const newFeatures = product.features.filter((_, i) => i !== index);
-      setProduct((prevProduct) => ({
-        ...prevProduct,
-        features: newFeatures,
-      }));
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log("Producto actualizado:", product);
-      alert("¡Producto actualizado con éxito!");
-    };
-  
-    return (
-      <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        <h2>Editar Producto</h2>
-        <button
-          type="button"
-          onClick={resetFields}
-          style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}
-        >
-          Nuevo Producto
-        </button>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Nombre:</label>
+    console.log(`${apiUrl}/v1/productos/${id}`, JSON.stringify(preparedFormData),config);
+      const { data } = await axios.put(`${apiUrl}/v1/productos/${id}`, preparedFormData,config);
+      setProduct(data);
+      setSuccessMessage('¡Producto actualizado con éxito!');
+      setTimeout(() => setSuccessMessage(''), 3000);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  if (loading && !product) return <div className="text-center p-4">Cargando producto...</div>;
+  if (error && !product) return <div className="text-danger p-4">Error: {error}</div>;
+
+  return (
+    <div className="container py-4">
+      <h3 className="mb-4">Producto: {product?.nombre}</h3>
+
+      {successMessage && <div className="alert alert-success">{successMessage}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
+
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Nombre:</label>
             <input
               type="text"
-              name="name"
-              value={product.name}
+              name="nombre"
+              value={formData.nombre}
               onChange={handleChange}
-              style={{ width: '100%', marginBottom: '10px' }}
+              className="form-control"
+              required
             />
           </div>
-          <div>
-            <label>Imagen (URL:""):</label>
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Precio:</label>
             <input
               type="text"
-              name="image"
-              value={product.image}
-              onChange={handleChange}
-              style={{ width: '100%', marginBottom: '10px' }}
+              name="precio"
+              value={formData.precio}
+              onChange={(e) => {
+                const rawValue = e.target.value.replace(/[^0-9]/g, ''); // Keep only numeric values
+                const formattedValue = parseInt(rawValue || 0).toLocaleString('es-CL');
+                setFormData((prevState) => ({
+                  ...prevState,
+                  precio: formattedValue
+                }));
+              }}
+              className="form-control"
+              required
             />
           </div>
-          <div>
-            <label>Descripción:</label>
-            <textarea
-              name="description"
-              value={product.description}
+        </div>
+
+        <div className="row">
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Marca:</label>
+            <input
+              type="text"
+              name="marca"
+              value={formData.marca}
               onChange={handleChange}
-              style={{ width: '100%', marginBottom: '10px' }}
+              className="form-control"
+              required
             />
           </div>
-          <div>
-            <label>Precio:</label>
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Stock:</label>
             <input
               type="number"
-              name="price"
-              value={product.price}
+              name="stock"
+              value={formData.stock}
               onChange={handleChange}
-              style={{ width: '100%', marginBottom: '10px' }}
+              className="form-control"
+              required
             />
           </div>
-          <div>
-            <label>Características:</label>
-            {product.features.map((feature, index) => (
-              <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                <input
-                  type="text"
-                  value={feature}
-                  onChange={(e) => handleFeatureChange(index, e.target.value)}
-                  style={{ flex: 1, marginRight: '10px' }}
-                />
-                <button type="button" onClick={() => removeFeature(index)}>Eliminar</button>
-              </div>
-            ))}
-            <button type="button" onClick={addFeature} style={{ marginTop: '10px' }}>
-              Agregar característica
-            </button>
-          </div>
-          <div>
-            <label>Contacto:</label>
-            <input
-              type="email"
-              name="contact"
-              value={product.contact}
-              onChange={handleChange}
-              style={{ width: '100%', marginBottom: '10px' }}
-            />
-          </div>
-          <button type="submit" style={{ marginTop: '20px' }}>Guardar Cambios</button>
-        </form>
-        <Link to="/" style={{ display: 'block', marginTop: '20px' }}>Volver a la lista de productos</Link>
-      </div>
-    );
-  };
-  
-    
- 
-export default EditProductPage;
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Descripción:</label>
+          <textarea
+            name="descripcion"
+            value={formData.descripcion}
+            onChange={handleChange}
+            className="form-control"
+            rows="3"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Características:</label>
+          <textarea
+            name="caracteristicas"
+            value={formData.caracteristicas}
+            onChange={handleChange}
+            className="form-control"
+            rows="3"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">URL de imagen:</label>
+          <input
+            type="text"
+            name="imagen_url"
+            value={formData.imagen_url}
+            onChange={handleChange}
+            className="form-control"
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Guardando...' : 'Guardar Cambios'}
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default ProductEditor;
