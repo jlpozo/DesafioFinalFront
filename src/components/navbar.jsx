@@ -80,7 +80,7 @@ function Navbar() {
               </Link>
             </li>
             <li className="nav-item">
-              {isAdmin ? (
+              {token ? (
                 <button
                   className="nav-link btn btn-link"
                   onClick={handleLogout}
