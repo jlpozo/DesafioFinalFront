@@ -31,7 +31,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div className="container d-flex flex-column min-vh-100">
+        <div className="principal d-flex flex-column min-vh-100">
           <Header/>
           <Navbar/>
           
