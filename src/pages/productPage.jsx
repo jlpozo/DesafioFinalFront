@@ -11,7 +11,7 @@ import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 
-const formatPrice = (valor) => valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const formatPrice = (valor) => Math.round(parseFloat(valor || 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 function Product() {
     const [producto, setProducto] = useState(null);  // Cambiado de [] a null
