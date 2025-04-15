@@ -57,7 +57,7 @@ function Navbar() {
   const handleLogout = () => {
     setToken(null); 
     navigate("/");// Elimina el token del contexto
-    location.href ="../Pages/Home";
+    //location.href ="../Pages/Home";
   };
 
   return (
